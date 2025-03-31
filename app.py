@@ -83,17 +83,60 @@ def format_json_for_display(json_data):
     # For skills JSON structure
     if "Analytical" in json_data:
         rows = []
+        total_score = 0
+        count = 0
+        
         for skill, data in json_data.items():
+            rating = data.get("Rating", "N/A")
             rows.append({
                 "Skill": skill,
-                "Rating": data.get("Rating", "N/A"),
+                "Rating": rating,
                 "Reasoning": data.get("Reasoning", "N/A")
             })
-        return pd.DataFrame(rows)
+            
+            # Add to average calculation if rating is a number
+            if isinstance(rating, (int, float)):
+                total_score += rating
+                count += 1
+        
+        # Calculate average score
+        avg_score = round(total_score / count, 1) if count > 0 else "N/A"
+        
+        # Create DataFrame with rows
+        df = pd.DataFrame(rows)
+        
+        # Return both DataFrame and average score
+        return df, avg_score
     
     # For behavior JSON structure (assuming a different structure)
     elif "Conviction" in json_data:
         # Adjust based on actual behavior JSON structure
+        rows = []
+        total_score = 0
+        count = 0
+        
+        for behavior, data in json_data.items():
+            if isinstance(data, dict) and "Rating" in data:
+                rating = data.get("Rating", "N/A")
+                rows.append({
+                    "Behavior": behavior,
+                    "Rating": rating,
+                    "Reasoning": data.get("Reasoning", "N/A")
+                })
+                
+                # Add to average calculation if rating is a number
+                if isinstance(rating, (int, float)):
+                    total_score += rating
+                    count += 1
+        
+        # Calculate average score
+        avg_score = round(total_score / count, 1) if count > 0 else "N/A"
+        
+        # Create DataFrame with rows
+        df = pd.DataFrame(rows)
+        
+        # Return both DataFrame and average score
+        return df, avg_score
         rows = []
         for behavior, data in json_data.items():
             rows.append({
@@ -108,7 +151,7 @@ def format_json_for_display(json_data):
         # Convert the JSON to DataFrame directly
         # This is a simplistic approach that might need adjustment
         # based on the actual structure of your JSON
-        return pd.DataFrame([json_data])
+        return pd.DataFrame([json_data]), "N/A"
 
 def display_json_response(app_id, response_type):
     """Display JSON response in a neat tabular fashion"""
@@ -121,8 +164,16 @@ def display_json_response(app_id, response_type):
         
         st.markdown(f"<div class='section-header'>{response_type.title()} Analysis</div>", unsafe_allow_html=True)
         
-        # Convert to DataFrame for display
-        df = format_json_for_display(data)
+        # Convert to DataFrame for display and get average score
+        df, avg_score = format_json_for_display(data)
+        
+        # Display average score at the top with custom styling
+        if avg_score != "N/A":
+            st.markdown(f"""
+            <div style="padding: 10px; background-color: #f0f2f6; border-radius: 5px; margin-bottom: 15px;">
+                <h3 style="margin: 0; color: #1E3A8A; font-size: 18px;">Average Score: <span style="font-size: 24px; font-weight: bold;">{avg_score}/10</span></h3>
+            </div>
+            """, unsafe_allow_html=True)
         
         if not df.empty:
             # Apply custom styling
@@ -164,6 +215,10 @@ def generate_analysis(app_id, local_folder=LOCAL_FOLDER):
             st.error(f"Error generating analysis: {str(e)}")
 
 def main():
+    # Initialize session state for controlling UI visibility
+    if 'show_results' not in st.session_state:
+        st.session_state.show_results = True
+    
     st.markdown("<div class='main-header'>AJVC Video Analysis</div>", unsafe_allow_html=True)
     
     # Load application IDs
@@ -183,15 +238,17 @@ def main():
         
         with col1:
             if st.button("Generate Analysis", type="primary"):
+                st.session_state.show_results = True
                 generate_analysis(selected_id)
         
         with col2:
             if st.button("Clear"):
-                # Generate new analysis
-                generate_analysis(selected_id)
+                # Just clear the UI by setting the flag
+                st.session_state.show_results = False
+                st.success("Output cleared. The cached analysis is still available.")
         
-        # Display JSON responses
-        if selected_id:
+        # Display JSON responses only if show_results is True
+        if selected_id and st.session_state.show_results:
             skill_tab, behavior_tab = st.tabs(["Skill Analysis", "Behavior Analysis"])
             
             with skill_tab:
