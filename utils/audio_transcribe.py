@@ -55,7 +55,7 @@ def get_video_transcription(local_directory: str, id: str):
             with open(transcription_cache_path, 'w') as cache_file:
                 json.dump(transcript_dict, cache_file)
             print(f"Cached transcription for {file_id}")
-            # os.remove(f"{local_directory}/{file_id}.mp3")
+            os.remove(f"{local_directory}/{file_id}.mp3")
     return transcript_dict
 
 def convert_file_mp3(local_directory:str, id:str):
