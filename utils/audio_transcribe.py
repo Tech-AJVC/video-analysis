@@ -30,7 +30,7 @@ def get_video_transcription(local_directory: str, id: str):
         print(f"Using cached transcription for {file_id}")
         with open(transcription_cache_path, 'r') as cache_file:
                 transcription = json.load(cache_file)
-                transcript_dict[file_id] = transcription
+                transcript_dict = transcription
     else:
         print(f"Transcribing file id {file_id}...")
         with open(f"{local_directory}/{file_id}.mp3", 'rb') as audio_file:
@@ -38,9 +38,18 @@ def get_video_transcription(local_directory: str, id: str):
                 model="gpt-4o-transcribe", 
                 file=audio_file, 
                 response_format="text",
-                prompt=file_id
+                # prompt=file_id
             )
-            transcript_dict[file_id] = transcription
+            transcription_v2 = client.audio.transcriptions.create(
+                file=audio_file,
+                model="whisper-1",
+                response_format="text",
+                # timestamp_granularities=["word"]
+            )
+            if len(transcription) <= len(transcription_v2):
+                transcription = transcription_v2
+                logging.info(f"Using Whisper-1 transcription for {file_id} got length {len(transcription)}")
+            transcript_dict[str(file_id)] = transcription
                 
             # Cache the transcription
             with open(transcription_cache_path, 'w') as cache_file:
