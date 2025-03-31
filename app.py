@@ -10,6 +10,10 @@ from utils.filter_responses import filter_responses
 from main import run_scoring_pipeline
 from constants import APPLICATION_ID, VIDEO_LINK, LOCAL_FOLDER, FILTRATION_SHEET_LINK, FILTRATION_SHEET_NAME, MODEL_PITCH
 
+import logging
+
+logging.basicConfig(level=logging.INFO)
+
 st.set_page_config(
     page_title="AJVC Video Analysis",
     page_icon="🎬",
@@ -212,6 +216,7 @@ def generate_analysis(app_id, local_folder=LOCAL_FOLDER):
             run_scoring_pipeline(local_folder, app_id)
             st.success(f"Analysis generated for Application ID {app_id}")
         except Exception as e:
+            logging.exception(f"Error generating analysis: {str(e)}")
             st.error(f"Error generating analysis: {str(e)}")
 
 def main():
