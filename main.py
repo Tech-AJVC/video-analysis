@@ -23,6 +23,7 @@ def run_scoring_pipeline(local_directory, id):
         behavior_response_json = get_cached_response(id, "behavior")
     else:
         behavior_system_prompt_formatted = behavior_system_prompt.format(model_pitch=MODEL_PITCH, company_details= company_details)
+        print(transcript_dict)
         behavior_user_prompt_formatted = behavior_user_prompt.format(transcript=transcript_dict[str(id)])
         behavior_response = get_response_from_openai(behavior_system_prompt_formatted, behavior_user_prompt_formatted)
         behavior_response_json = json.loads(behavior_response)
