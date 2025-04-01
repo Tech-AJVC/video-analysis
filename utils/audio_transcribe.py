@@ -8,6 +8,10 @@ import shutil
 
 load_dotenv(find_dotenv())
 
+import logging
+
+logging.basicConfig(level=logging.INFO)
+
 # Create necessary folders for caching
 def ensure_cache_folders():
     folders = ["transcriptions", "responses"]
