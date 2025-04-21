@@ -95,6 +95,7 @@ def format_json_for_display(json_data):
             rows.append({
                 "Skill": skill,
                 "Rating": rating,
+                "Citations": data.get("Citations", "N/A"),
                 "Reasoning": data.get("Reasoning", "N/A")
             })
             
@@ -125,6 +126,7 @@ def format_json_for_display(json_data):
                 rows.append({
                     "Behavior": behavior,
                     "Rating": rating,
+                    "Citations": data.get("Citations", "N/A"),
                     "Reasoning": data.get("Reasoning", "N/A")
                 })
                 
@@ -146,6 +148,7 @@ def format_json_for_display(json_data):
             rows.append({
                 "Behavior": behavior,
                 "Rating": data.get("Rating", "N/A"),
+                "Citations": data.get("Citations", "N/A"),
                 "Reasoning": data.get("Reasoning", "N/A")
             })
         return pd.DataFrame(rows)
@@ -191,6 +194,10 @@ def display_json_response(app_id, response_type):
                             format="%d/10",
                             min_value=0,
                             max_value=10,
+                        ),
+                        "Citations": st.column_config.TextColumn(
+                            "Citations",
+                            width="large"
                         ),
                         "Reasoning": st.column_config.TextColumn(
                             "Reasoning",
