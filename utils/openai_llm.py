@@ -5,7 +5,7 @@ from dotenv import load_dotenv, find_dotenv
 
 load_dotenv(find_dotenv())
 
-def get_response_from_openai(system_prompt: str, user_prompt: str, model_name: str = "gpt-4o-2024-08-06") -> str:
+def get_response_from_openai(system_prompt: str, user_prompt: str, model_name: str = "gpt-4.1-mini") -> str:
 
     open_ai_api_key = os.getenv("OPENAI_API_KEY")
     client = OpenAI(api_key=open_ai_api_key)
