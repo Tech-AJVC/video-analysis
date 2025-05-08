@@ -22,7 +22,8 @@ def ensure_cache_folders():
 
 def get_video_transcription(local_directory: str, id: str):
     ensure_cache_folders()
-    client = OpenAI()
+    open_ai_api_key = os.getenv("OPENAI_API_KEY")
+    client = OpenAI(api_key=open_ai_api_key)
     transcript_dict = {}
     
     # Process all MP3 files in the directory

@@ -1,0 +1,62 @@
+{
+    "Conviction": {
+        "Citations": "Founder states, 'We have launched Bullion brand... We focus on aspirational middle class who want to wear premium products at affordable price point.' From the form: 'Conviction/Belief: 5' and 'I planned that I want to spend at least 5% of my life = 3-4 years working on building a startup around a problem I am passionate about.'",
+        "Reasoning": "The founder shows strong conviction by identifying a clear market gap and launching a brand to address it, demonstrating commitment to the idea despite competition and market challenges. The self-rating of 5/5 on conviction supports this.",
+        "Rating": 9
+    },
+    "Relentless": {
+        "Citations": "Founder mentions multiple strategic programs led at Spinny contributing to growth and profitability, indicating persistence. From the form: 'Relentlessness: 5' and 'even if it\u2019s failing I will try my best to figure out how to make it work.'",
+        "Reasoning": "The founder's experience leading complex programs and the self-assessed relentlessness suggest a strong drive to create and pursue opportunities even when faced with challenges.",
+        "Rating": 8
+    },
+    "Resilience/Grit": {
+        "Citations": "Founder shares a personal failure in school and how he learned from it to improve later. From the form: 'Resilience: 5' and 'I still feel this as a biggest failure till date... helped me accept my failure and move on with learnings.'",
+        "Reasoning": "The founder demonstrates resilience by reflecting on past failure, learning from it, and moving forward, which indicates a good level of grit.",
+        "Rating": 8
+    },
+    "Curiosity": {
+        "Citations": "Founder states, 'I am learning SEO... focused towards On-page SEO... started Off-page SEO...' From the form: 'Curiosity: 5' and 'Always asking questions and has a high learning ability.'",
+        "Reasoning": "The founder actively seeks to learn new skills relevant to the business, showing a strong curiosity and willingness to grow.",
+        "Rating": 9
+    },
+    "Reliable": {
+        "Citations": "Founder highlights leading multiple strategic programs successfully at Spinny, including managing large teams and P&L. From the form: 'Reliability: 5' and 'I have never received such quick and elaborate response for the application.'",
+        "Reasoning": "The founder's track record of managing complex projects and delivering results on time indicates high reliability.",
+        "Rating": 9
+    },
+    "Believable": {
+        "Citations": "Founder provides specific market data and sales figures: 'sold 200 plus sets... revenue of 1.6 lakhs and blended GM of 26%.' From the form: 'Judgement: 5' and 'Communication: 5'.",
+        "Reasoning": "The founder presents realistic and verifiable data with confidence, making the pitch believable and trustworthy.",
+        "Rating": 9
+    },
+    "Courage": {
+        "Citations": "Founder left established roles at Spinny and IBM to start a new venture in a competitive market. From the form: 'Courage: 5' and 'Willingness to try and fail, go against the world if required.'",
+        "Reasoning": "Starting a new brand in a competitive and unorganized market shows courage and willingness to take risks.",
+        "Rating": 8
+    },
+    "Innovative": {
+        "Citations": "Founder identifies a market gap in economy and mid-range ethnic wear and uses technology to leverage consumer behavior. From the form: 'Innovative: 4' and 'Modify Existing Platforms.'",
+        "Reasoning": "The approach is innovative in market positioning and use of technology, though product innovation is moderate as it builds on existing platforms.",
+        "Rating": 7
+    },
+    "Energy": {
+        "Citations": "Founder demonstrates enthusiasm in describing market opportunity and personal background. From the form: 'Energetic: 5' and 'Looking forward to hearing back for the next step.'",
+        "Reasoning": "The pitch is delivered with positive energy and motivation, reflecting a high level of drive.",
+        "Rating": 8
+    },
+    "Trustworthy": {
+        "Citations": "Founder shares honest personal failure and learning, provides transparent sales data. From the form: 'Trustworthy: 5' and 'Keeps promises and avoids withholding information.'",
+        "Reasoning": "The founder is transparent about challenges and progress, building trustworthiness.",
+        "Rating": 9
+    },
+    "Inspirational": {
+        "Citations": "Founder talks about building a women-led team and positive impact on 5000+ people. From the form: 'Inspiring: 5' and 'Build strong relationship and culture among all stakeholders.'",
+        "Reasoning": "The vision to empower women and create positive social impact is inspiring and shows leadership.",
+        "Rating": 8
+    },
+    "Clarity": {
+        "Citations": "Founder clearly explains market gap, target customers, product positioning, and personal background. From the form: 'Clear Thinking: 5' and 'Communication: 5'.",
+        "Reasoning": "The pitch is coherent, well-structured, and easy to follow, demonstrating clarity of thought.",
+        "Rating": 9
+    }
+}

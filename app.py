@@ -2,6 +2,8 @@ import streamlit as st
 import os
 import json
 import pandas as pd
+import threading
+import atexit
 from utils.audio_transcribe import ensure_cache_folders
 from utils.responses_cache import get_cached_response, store_response
 from utils.google_clients import read_google_sheets
@@ -9,6 +11,9 @@ from constants import APPLICATION_ID, FILTRATION_SHEET_LINK, FILTRATION_SHEET_NA
 from utils.filter_responses import filter_responses
 from main import run_scoring_pipeline
 from constants import APPLICATION_ID, VIDEO_LINK, LOCAL_FOLDER, FILTRATION_SHEET_LINK, FILTRATION_SHEET_NAME, MODEL_PITCH
+
+# Import the background scheduler
+from background_scheduler import start_background_processing, stop_background_processing
 
 import logging
 
@@ -272,5 +277,12 @@ def main():
         st.error("No application IDs found. Please check your Google Sheets connection.")
         
         
+# Initialize the background scheduler to run at 2 AM
+# This runs in a separate thread and won't affect the Streamlit UI
+background_scheduler = start_background_processing()
+
+# Register the shutdown function to stop the scheduler when the app exits
+atexit.register(stop_background_processing)
+
 if __name__ == "__main__":
     main()
