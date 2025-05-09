@@ -1,0 +1,62 @@
+{
+    "Conviction": {
+        "Citations": "dummy",
+        "Reasoning": "dummy",
+        "Rating": 10
+    },
+    "Relentless": {
+        "Citations": "dummy",
+        "Reasoning": "dummy",
+        "Rating": 7
+    },
+    "Resilience/Grit": {
+        "Citations": "dummy",
+        "Reasoning": "dummy",
+        "Rating": 6
+    },
+    "Curiosity": {
+        "Citations": "dummy",
+        "Reasoning": "dummy",
+        "Rating": 7
+    },
+    "Reliable": {
+        "Citations": "dummy",
+        "Reasoning": "dummy",
+        "Rating": 9
+    },
+    "Believable": {
+        "Citations": "dummy",
+        "Reasoning": "dummy",
+        "Rating": 9
+    },
+    "Courage": {
+        "Citations": "dummy",
+        "Reasoning": "dummy",
+        "Rating": 7
+    },
+    "Innovative": {
+        "Citations": "dummy",
+        "Reasoning": "dummy",
+        "Rating": 9
+    },
+    "Energy": {
+        "Citations": "dummy",
+        "Reasoning": "dummy",
+        "Rating": 7
+    },
+    "Trustworthy": {
+        "Citations": "dummy",
+        "Reasoning": "dummy",
+        "Rating": 9
+    },
+    "Inspirational": {
+        "Citations": "dummy",
+        "Reasoning": "dummy",
+        "Rating": 7
+    },
+    "Clarity": {
+        "Citations": "dummy",
+        "Reasoning": "dummy",
+        "Rating": 9
+    }
+}
