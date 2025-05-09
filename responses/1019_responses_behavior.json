@@ -1,0 +1,62 @@
+{
+    "Conviction": {
+        "Citations": "dummy",
+        "Reasoning": "dummy",
+        "Rating": 10
+    },
+    "Relentless": {
+        "Citations": "dummy",
+        "Reasoning": "dummy",
+        "Rating": 7
+    },
+    "Resilience/Grit": {
+        "Citations": "dummy",
+        "Reasoning": "dummy",
+        "Rating": 6
+    },
+    "Curiosity": {
+        "Citations": "dummy",
+        "Reasoning": "dummy",
+        "Rating": 7
+    },
+    "Reliable": {
+        "Citations": "The founder clearly defines team roles and responsibilities: 'The operational strategic pillar handled by me... campaign execution by Anushka Modi... tech by Jai Hindpal... business development by Kartik Iyer.' From the form: 'Reliability: 5' indicating high reliability.",
+        "Reasoning": "The founder demonstrates reliability by organizing a clear team structure with defined roles, showing accountability and follow-through on commitments. This suggests dependable execution.",
+        "Rating": 9
+    },
+    "Believable": {
+        "Citations": "The founder provides concrete examples: 'In Pune, there's a dedicated women's safety helpline number 1091... a major campaign was done in October... but many are unaware.' The approach is realistic and grounded. From the form: 'Clear Thinking: 5' and 'Judgement: 4' support believability.",
+        "Reasoning": "The founder speaks honestly about the problem and the limitations of existing efforts, presenting a credible solution with a clear plan. The realistic assessment and transparent communication enhance believability.",
+        "Rating": 9
+    },
+    "Courage": {
+        "Citations": "The founder is tackling a sensitive social issue and plans to innovate with AI and gamification despite challenges: 'Obviously, it's easier said than done.' From the form: 'Courage: 4' indicating moderate courage.",
+        "Reasoning": "The founder shows willingness to address a difficult societal problem and to innovate with new technologies, which requires courage. However, the transcript does not show bold or confrontational stances, reflecting moderate courage.",
+        "Rating": 7
+    },
+    "Innovative": {
+        "Citations": "The founder plans to use 'AI voice agents' and 'gamify the entire experience' to improve impact communication. From the form: 'Innovative: 5' indicating strong innovation.",
+        "Reasoning": "The use of AI voice agents for local language engagement and gamification to increase recall are clear innovative approaches to a traditional problem, showing strong differentiation.",
+        "Rating": 9
+    },
+    "Energy": {
+        "Citations": "The founder speaks with enthusiasm about repeated engagement and new features: 'We send these notifications again and again... we want to introduce coupons and vouchers.' From the form: 'Energetic: 3' indicating moderate energy.",
+        "Reasoning": "The founder maintains a positive and motivated tone throughout the pitch, showing steady energy. However, the form rating suggests energy is not consistently high or infectious.",
+        "Rating": 7
+    },
+    "Trustworthy": {
+        "Citations": "The founder openly discusses the problem with existing campaigns and their solution without exaggeration. The team structure is transparent. From the form: 'Reliability: 5' and 'Clear Thinking: 5' support trustworthiness.",
+        "Reasoning": "The founder is transparent about challenges and realistic about their solution, which builds trust. The clear team roles and honest communication further enhance trustworthiness.",
+        "Rating": 9
+    },
+    "Inspirational": {
+        "Citations": "The founder outlines a clear mission to empower people and improve social impact communication. The team is described as pillars supporting the mission. From the form: 'Inspiring: 4' indicating good but not exceptional inspiration.",
+        "Reasoning": "The founder communicates a meaningful mission and a structured team approach, which can inspire confidence in stakeholders. However, the pitch lacks strong emotional appeal or rallying calls to action.",
+        "Rating": 7
+    },
+    "Clarity": {
+        "Citations": "The founder clearly explains the problem, solution, team roles, and future plans: 'We empower with notifications... AI voice agents... gamify the experience... four pillars of the company.' From the form: 'Clear Thinking: 5' indicating high clarity.",
+        "Reasoning": "The pitch is well-organized and easy to follow, with consistent messaging and clear articulation of the business model and team structure, demonstrating strong clarity.",
+        "Rating": 9
+    }
+}

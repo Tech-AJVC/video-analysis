@@ -1,0 +1,52 @@
+{
+    "Analytical": {
+        "Citations": "dummy",
+        "Reasoning": "dummy",
+        "Rating": 6
+    },
+    "Communication": {
+        "Citations": "dummy",
+        "Reasoning": "dummy",
+        "Rating": 7
+    },
+    "Judgement": {
+        "Citations": "dummy",
+        "Reasoning": "dummy",
+        "Rating": 7
+    },
+    "Negotiation": {
+        "Citations": "dummy",
+        "Reasoning": "dummy",
+        "Rating": 2
+    },
+    "Problem Solving": {
+        "Citations": "dummy",
+        "Reasoning": "dummy",
+        "Rating": 8
+    },
+    "Financial": {
+        "Citations": "dummy",
+        "Reasoning": "dummy",
+        "Rating": 3
+    },
+    "Technical": {
+        "Citations": "dummy",
+        "Reasoning": "dummy",
+        "Rating": 6
+    },
+    "Sales and Marketing": {
+        "Citations": "dummy",
+        "Reasoning": "dummy",
+        "Rating": 5
+    },
+    "Project Management": {
+        "Citations": "dummy",
+        "Reasoning": "dummy",
+        "Rating": 5
+    },
+    "Network Building": {
+        "Citations": "dummy",
+        "Reasoning": "dummy",
+        "Rating": 2
+    }
+}
