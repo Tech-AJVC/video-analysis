@@ -112,13 +112,6 @@ if __name__ == '__main__':
     # --- Create a dummy file for testing upload --- #
     DUMMY_FILE_NAME = "responses/1019_responses_behavior.json"
     DUMMY_FILE_CONTENT = "."
-    # with open(DUMMY_FILE_NAME, "w") as f:
-    #     f.write(DUMMY_FILE_CONTENT)
-    # logger.info(f"Created dummy file: {DUMMY_FILE_NAME}")
-
-    # --- Test Upload --- #
-    # Ensure DATASET_REPO_ID is correctly set in the constants above
-    # And that you have write permissions (HF_TOKEN with write access)
     if DATASET_REPO_ID == "USER_HF_USERNAME/DATASET_NAME":
         logger.warning(
             "Please update DATASET_REPO_ID in hf_utils.py with your actual Hugging Face Dataset repository ID to test.")
@@ -143,15 +136,9 @@ if __name__ == '__main__':
                 with open(downloaded_path, "r") as f_read:
                     content = f_read.read()
                     print(content)
-                # os.remove(downloaded_path)  # Clean up downloaded file
             else:
                 logger.error("Download test failed.")
         else:
             logger.error("Upload test failed, skipping download test.")
-
-    # --- Clean up dummy file --- #
-    # if os.path.exists(DUMMY_FILE_NAME):
-    #     os.remove(DUMMY_FILE_NAME)
-    #     logger.info(f"Cleaned up dummy file: {DUMMY_FILE_NAME}")
 
     logger.info("Hugging Face Utils testing finished.")
