@@ -77,7 +77,7 @@ def format_company_response(company_response):
     # Team Skills and Traits
     formatted_text += "\nTeam Skills and Traits:\n" + "-" * 20 + "\n"
     
-    # # Skills section
+    # Skills section
     skills = [
         "Analytical", "Communication", "Judgement", "Negotiation", "Problem Solving",
         "Financial", "Technical", "Sales and Marketing", "Project Management", "Network Building", "Product Management"
@@ -134,10 +134,6 @@ def format_company_response(company_response):
         market_fields + customer_fields + skills + traits + product_fields + background_fields + 
         ["What is your vision for the company?", "What is the greater mission beyond building a profitable business?", "Describe your solution in detail"]
     )
-    remaining_fields = set(company_response.keys()) - set(
-    market_fields + customer_fields + product_fields + background_fields + 
-    ["What is your vision for the company?", "What is the greater mission beyond building a profitable business?", "Describe your solution in detail"]
-)
     
     if remaining_fields:
         formatted_text += "\nAdditional Information:\n" + "-" * 20 + "\n"
