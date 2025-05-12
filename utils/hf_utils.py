@@ -110,7 +110,7 @@ if __name__ == '__main__':
     logger.info("Testing Hugging Face Utils...")
 
     # --- Create a dummy file for testing upload --- #
-    DUMMY_FILE_NAME = "/Users/abhinavbhatnagar/Documents/Compliance/video-analysis/responses/1019_responses_behavior.json"
+    DUMMY_FILE_NAME = "responses/1019_responses_behavior.json"
     DUMMY_FILE_CONTENT = "."
     # with open(DUMMY_FILE_NAME, "w") as f:
     #     f.write(DUMMY_FILE_CONTENT)
