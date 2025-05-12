@@ -11,6 +11,8 @@ from constants import APPLICATION_ID, FILTRATION_SHEET_LINK, FILTRATION_SHEET_NA
 from utils.filter_responses import filter_responses
 from main import run_scoring_pipeline
 from constants import APPLICATION_ID, VIDEO_LINK, LOCAL_FOLDER, FILTRATION_SHEET_LINK, FILTRATION_SHEET_NAME, MODEL_PITCH
+# Python program to show time by perf_counter() 
+from time import perf_counter
 
 # Import the background scheduler
 from background_scheduler import start_background_processing, stop_background_processing
@@ -166,14 +168,11 @@ def format_json_for_display(json_data):
         return pd.DataFrame([json_data]), "N/A"
 
 def display_json_response(app_id, response_type):
-    """Display JSON response in a neat tabular fashion"""
-    filename = f"{app_id}_responses_{response_type}.json"
-    filepath = os.path.join("responses", filename)
+    """Display JSON response in a neat tabular fashion using cached data from Hugging Face."""
+    # Fetch data using get_cached_response
+    data = get_cached_response(app_id, response_type)
     
-    if os.path.exists(filepath):
-        with open(filepath, 'r') as f:
-            data = json.load(f)
-        
+    if data: # Check if data was successfully retrieved from cache
         st.markdown(f"<div class='section-header'>{response_type.title()} Analysis</div>", unsafe_allow_html=True)
         
         # Convert to DataFrame for display and get average score
@@ -233,6 +232,7 @@ def generate_analysis(app_id, local_folder=LOCAL_FOLDER):
 
 def main():
     # Initialize session state for controlling UI visibility
+    
     if 'show_results' not in st.session_state:
         st.session_state.show_results = True
     
@@ -256,7 +256,12 @@ def main():
         with col1:
             if st.button("Generate Analysis", type="primary"):
                 st.session_state.show_results = True
+                # Start the stopwatch / counter
+                t1_start = perf_counter() 
                 generate_analysis(selected_id)
+                # Stop the stopwatch / counter
+                t1_stop = perf_counter()
+                print("Elapsed time:", t1_stop - t1_start)
         
         with col2:
             if st.button("Clear"):
