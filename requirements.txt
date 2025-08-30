@@ -13,3 +13,4 @@ ffmpeg-python==0.2.0
 numpy==1.26.0
 streamlit==1.32.2
 huggingface-hub==0.31.1
+APScheduler==3.10.4
