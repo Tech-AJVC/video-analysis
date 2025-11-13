@@ -8,7 +8,7 @@ google-auth==2.38.0
 google-auth-httplib2==0.2.0
 google-auth-oauthlib==1.2.1
 pydub==0.25.1
-requests==2.31.0
+requests>=2.32.2
 ffmpeg-python==0.2.0
 numpy==1.26.0
 streamlit==1.32.2
