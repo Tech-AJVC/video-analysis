@@ -10,7 +10,7 @@ google-auth-oauthlib==1.2.1
 pydub==0.25.1
 requests>=2.32.2
 ffmpeg-python==0.2.0
-numpy==1.26.0
+numpy==1.26.4
 streamlit==1.32.2
 huggingface-hub==0.31.1
 APScheduler==3.10.4
