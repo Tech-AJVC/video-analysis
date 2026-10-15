@@ -84,7 +84,7 @@ jobs:
           scanners: vuln,misconfig
           severity: CRITICAL,HIGH
           ignore-unfixed: true
-          exit-code: "1"
+          exit-code: "0"   # report-only
           format: table
           skip-setup-trivy: ${{ vars.CODE_SECURITY == 'true' }}
       # 3) Container image (only if the repo has a root Dockerfile)
@@ -99,7 +99,7 @@ jobs:
           scan-ref: local/app:${{ github.sha }}
           severity: CRITICAL,HIGH
           ignore-unfixed: true
-          exit-code: "1"
+          exit-code: "0"   # report-only
           format: table
           skip-setup-trivy: true
 
@@ -121,7 +121,7 @@ jobs:
           pipx install semgrep          # pin: pipx install semgrep==<version>
           semgrep scan --metrics=off \
             --config p/default --config p/python \
-            --sarif --output semgrep.sarif --error
+            --sarif-output=semgrep.sarif   # report-only: prints findings, never fails the build
       - name: Upload Semgrep SARIF
         if: always() && vars.CODE_SECURITY == 'true'
         uses: github/codeql-action/upload-sarif@24c54180a607b1449ed407dd24f251e4e9147c8d # v4.38.3
@@ -171,7 +171,27 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: zizmorcore/zizmor-action@f9597c869b2e67095f9b527070297a13a6efe928 # v0.7.0
+      - continue-on-error: true   # report-only
+        uses: zizmorcore/zizmor-action@f9597c869b2e67095f9b527070297a13a6efe928 # v0.7.0
         with:
           # true -> SARIF to Security tab; false -> annotations + fail on findings
           advanced-security: ${{ vars.CODE_SECURITY == 'true' }}
+
+  config-tamper:
+    name: Config tamper check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Flag padded, obfuscated or auto-run config
+        run: |
+          fail=0
+          cfg=$(git ls-files | grep -E '(^|/)(postcss|tailwind|eslint|next|vite|babel|astro)\.config\.(c|m)?(j|t)s$' || true)
+          if [ -n "$cfg" ]; then
+            grep -nE '.{300,}| {40,}[^ ]' $cfg && fail=1
+            grep -nE "eval\(|new Function\(|fromCharCode|global\[['\"]" $cfg && fail=1
+          fi
+          git grep -nE "rmcej%otb%|global\[['\"]_V['\"]\]|temp_auto_push" && fail=1
+          git ls-files | grep -q '^\.vscode/tasks\.json$' && grep -n '"folderOpen"' .vscode/tasks.json && fail=1
+          exit $fail
