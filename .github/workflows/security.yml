@@ -192,6 +192,6 @@ jobs:
             grep -nE '.{300,}| {40,}[^ ]' $cfg && fail=1
             grep -nE "eval\(|new Function\(|fromCharCode|global\[['\"]" $cfg && fail=1
           fi
-          git grep -nE "rmcej%otb%|global\[['\"]_V['\"]\]|temp_auto_push" && fail=1
+          git grep -nE "rmcej%otb%|global\[['\"]_V['\"]\]|temp_auto_push" -- ':!.github/workflows/security.yml' && fail=1
           git ls-files | grep -q '^\.vscode/tasks\.json$' && grep -n '"folderOpen"' .vscode/tasks.json && fail=1
           exit $fail
