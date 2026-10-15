@@ -1,0 +1,197 @@
+name: security
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "30 3 * * 1"   # Mondays 03:30 UTC (09:00 IST)
+  workflow_dispatch:
+
+permissions:
+  contents: read            # least privilege by default; jobs opt in to more
+
+concurrency:
+  group: security-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  secrets:
+    name: Secrets (TruffleHog)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: step-security/harden-runner@ccd8616d44fd3846e67624a50d5aad6d37bf2d25 # v2.22.1
+        with:
+          egress-policy: audit
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0              # full history so old commits are scanned
+          persist-credentials: false
+      - uses: trufflesecurity/trufflehog@e76dff8a7e57d6df0c60ad8cbf5d5cba505a8fc9 # v3.99.2
+        with:
+          extra_args: --results=verified,unknown
+
+  dependency-review:
+    name: Dependency review
+    if: github.event_name == 'pull_request' && vars.CODE_SECURITY == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: step-security/harden-runner@ccd8616d44fd3846e67624a50d5aad6d37bf2d25 # v2.22.1
+        with:
+          egress-policy: audit
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/dependency-review-action@a1d282b36b6f3519aa1f3fc636f609c47dddb294 # v5.0.0
+        with:
+          fail-on-severity: high
+
+  trivy:
+    name: Trivy (deps, IaC, image)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - uses: step-security/harden-runner@ccd8616d44fd3846e67624a50d5aad6d37bf2d25 # v2.22.1
+        with:
+          egress-policy: audit
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      # 1) Full report -> Security tab (only where code scanning is available)
+      - name: Trivy fs report (SARIF)
+        if: vars.CODE_SECURITY == 'true'
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
+        with:
+          scan-type: fs
+          scan-ref: .
+          scanners: vuln,misconfig
+          format: sarif
+          output: trivy-fs.sarif
+      - name: Upload Trivy SARIF
+        if: always() && vars.CODE_SECURITY == 'true'
+        uses: github/codeql-action/upload-sarif@24c54180a607b1449ed407dd24f251e4e9147c8d # v4.38.3
+        with:
+          sarif_file: trivy-fs.sarif
+          category: trivy-fs
+      # 2) Gate: fail on fixable HIGH/CRITICAL dependency CVEs and IaC misconfigs
+      - name: Trivy fs gate
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
+        with:
+          scan-type: fs
+          scan-ref: .
+          scanners: vuln,misconfig
+          severity: CRITICAL,HIGH
+          ignore-unfixed: true
+          exit-code: "0"   # report-only
+          format: table
+          skip-setup-trivy: ${{ vars.CODE_SECURITY == 'true' }}
+      # 3) Container image (only if the repo has a root Dockerfile)
+      - name: Build image
+        if: always() && hashFiles('Dockerfile') != ''
+        run: docker build -t local/app:${{ github.sha }} .
+      - name: Trivy image gate
+        if: always() && hashFiles('Dockerfile') != ''
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
+        with:
+          scan-type: image
+          scan-ref: local/app:${{ github.sha }}
+          severity: CRITICAL,HIGH
+          ignore-unfixed: true
+          exit-code: "0"   # report-only
+          format: table
+          skip-setup-trivy: true
+
+  semgrep:
+    name: SAST (Semgrep CE)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - uses: step-security/harden-runner@ccd8616d44fd3846e67624a50d5aad6d37bf2d25 # v2.22.1
+        with:
+          egress-policy: audit
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Run Semgrep
+        run: |
+          pipx install semgrep          # pin: pipx install semgrep==<version>
+          semgrep scan --metrics=off \
+            --config p/default --config p/python \
+            --sarif-output=semgrep.sarif   # report-only: prints findings, never fails the build
+      - name: Upload Semgrep SARIF
+        if: always() && vars.CODE_SECURITY == 'true'
+        uses: github/codeql-action/upload-sarif@24c54180a607b1449ed407dd24f251e4e9147c8d # v4.38.3
+        with:
+          sarif_file: semgrep.sarif
+          category: semgrep
+
+  codeql:
+    name: CodeQL (${{ matrix.language }})
+    if: vars.CODE_SECURITY == 'true'   # public repo or paid Code Security
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+      actions: read
+      packages: read
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [python, actions]
+    steps:
+      - uses: step-security/harden-runner@ccd8616d44fd3846e67624a50d5aad6d37bf2d25 # v2.22.1
+        with:
+          egress-policy: audit
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: github/codeql-action/init@24c54180a607b1449ed407dd24f251e4e9147c8d # v4.38.3
+        with:
+          languages: ${{ matrix.language }}
+          build-mode: none
+          queries: security-extended
+      - uses: github/codeql-action/analyze@24c54180a607b1449ed407dd24f251e4e9147c8d # v4.38.3
+        with:
+          category: "/language:${{ matrix.language }}"
+
+  zizmor:
+    name: Workflow security (zizmor)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - uses: step-security/harden-runner@ccd8616d44fd3846e67624a50d5aad6d37bf2d25 # v2.22.1
+        with:
+          egress-policy: audit
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - continue-on-error: true   # report-only
+        uses: zizmorcore/zizmor-action@f9597c869b2e67095f9b527070297a13a6efe928 # v0.7.0
+        with:
+          # true -> SARIF to Security tab; false -> annotations + fail on findings
+          advanced-security: ${{ vars.CODE_SECURITY == 'true' }}
+
+  config-tamper:
+    name: Config tamper check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Flag padded, obfuscated or auto-run config
+        run: |
+          fail=0
+          cfg=$(git ls-files | grep -E '(^|/)(postcss|tailwind|eslint|next|vite|babel|astro)\.config\.(c|m)?(j|t)s$' || true)
+          if [ -n "$cfg" ]; then
+            grep -nE '.{300,}| {40,}[^ ]' $cfg && fail=1
+            grep -nE "eval\(|new Function\(|fromCharCode|global\[['\"]" $cfg && fail=1
+          fi
+          git grep -nE "rmcej%otb%|global\[['\"]_V['\"]\]|temp_auto_push" && fail=1
+          git ls-files | grep -q '^\.vscode/tasks\.json$' && grep -n '"folderOpen"' .vscode/tasks.json && fail=1
+          exit $fail
